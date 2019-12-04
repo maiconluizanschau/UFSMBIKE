@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block nav %}{% include "nav-menu.html" %}{% endblock nav %}
+{% block content %}
+	<h2>Confirme sua ação</h2>
+	<p>Você deseja apagar a bicicleta {{object.modelo}}?</p>
+	<form method="POST">
+		{% csrf_token %}
+		<button class="btn" type="button" onclick="javascript:history.back()" title="">Não deletar</button>
+		<button class="btn" type="submit">Confirmar</button>
+	</form>
+{% endblock %}

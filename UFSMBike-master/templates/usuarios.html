@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block nav %}{% include "nav-menu.html" %}{% endblock nav %}
+{% block content %}
+<div class="row">
+	<h1>Sua atividade:</h1>
+	<div class="col s6">
+		{% if request.user.bicicletaAlugada %}
+		<div class="padding card">
+			<div class="card-content">
+				<span class="card-title">Em alguel:</span>
+				<p><span class="chip">{{request.user.bicicletaAlugada.id}}</span> {{request.user.bicicletaAlugada.modelo}}</p>
+			</div>
+			<div class="card-action">
+				<a class="btn" href="{% url 'devolver-bicicleta' request.user.bicicletaAlugada.id %}">Devolver</a>
+			</div>
+		</div>
+		{% else %}
+		<div class="padding card">
+			<div class="card-content">
+				<span class="card-title">Em aluguel:</span>
+				<p><span class="chip white">Você não está alugando nenhuma bicicleta no momento.</span></p>
+			</div>
+			<div class="card-action">
+				<a class="btn disabled" href="#">Devolver</a>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<div class="col s6">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title">Débito:</span>
+				<p><span class="white chip">R$</span>{{request.user.multaSaldo|floatformat:2}}</p>
+			</div>
+			<div class="card-action">
+				{% if request.user.multaSaldo > 0 %}
+				<a href="{% url 'quitar-multa' request.user.pk %}" class="btn">Quitar Multa</a>
+				{% else%}
+				<a href="#" class="btn disabled">Quitar Multa</a>	
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<h2>Bicicletas disponíveis:</h2>
+	<div class="col s6">
+		<p>Há um total de {{totalBicicletas}} bicicletas disponíveis para aluguel em {{areas|length}} áreas.</p>
+	<div id="map" style="height: 520px"></div>
+	<script type="text/javascript">
+		var map;
+
+		function initMap() {
+			map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: -29.715236, lng: -53.715834},
+				zoom: 15
+			});
+
+				{% for a in areas %}
+					var marker{{a.id}} = new google.maps.Marker({
+				    	position: new google.maps.LatLng({{a.x}},{{a.y}}),
+				    	map: map,
+				    	title: '{{a.nome}}'
+					});
+
+					marker{{a.id}}.addListener('click', function() {
+						$('.area').fadeOut('fast');
+			    		$('#area{{a.id}}').fadeIn('fast');
+				  	});
+				{% endfor %}
+			}
+	</script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQkcIzOCgX5ISJer1WnTckLqp0tvoE31g&callback=initMap"></script>
+</div>
+	<div class="area-holder col s6">
+	{% for area in areas%}
+		<div class="area" id="area{{area.id}}">
+		<h5>{{area.nome}}</h5>
+		{% for b in bicicletas %}
+			{% if b.areaAtual.id == area.id %}
+				<div class="col s6">
+					<div class="card blue-grey center-align">
+						<div class="card-content white-text">
+							<p class="card-title">
+								<span class="chip white">{{b.id}}</span>
+								<strong>{{b.modelo}}</strong>
+							</p>
+							<br>
+							<p class="chip blue-grey darken-1">{{b.areaAtual.nome}}</p>
+						</div>
+						<div class="card-action">
+							<a class="btn blue-grey darken-3" href="{% url 'alugar-bicicleta' b.id %}">Alugar</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+	{% endfor %}
+	</div>
+</div>
+
+{% endblock content %}

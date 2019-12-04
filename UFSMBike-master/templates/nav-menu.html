@@ -1,0 +1,38 @@
+<script type="text/javascript" charset="utf-8">
+	{% for message in messages  %}
+		$(document).ready(function(){
+		    Materialize.toast('{{message}}',3000,'teal darken-2 center-align');
+		});
+	{% endfor %}
+</script>
+<nav class="blue-grey nav">
+	<div class="container">
+		<div class="nav-wrapper">
+			<span class="brand-logo" style="padding-left: 0.75em; font-size: 1.5em">
+				Olá, {% if request.user.is_admin %}{% endif %}
+				<strong>{{request.user.nome}}</strong>
+			</span>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="{% url 'index' %}">Ínicio</a></li>
+				<li><a href="{% url 'editar-usuario' request.user.pk %}" title="">Editar seus dados</a></li>
+				<li><a href="{% url 'logout' %}" title="">Logout</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+{% if request.user.is_admin %}
+	<nav class="blue-grey darken-4 nav">
+		<div class="container">
+			<div class="nav-wrapper">
+				<span class="blue-grey-text brand-logo" style="padding-left: 0.75em; font-size: 1.2em">Painel do Administrador</span>
+				<ul class="right">
+					<li><a class="blue-grey-text" href="{% url 'controle-multas' %}" title="">Adicionar Multa</a></li>
+					<li><a class="blue-grey-text" href="{% url 'lista-bicicleta' %}" title="">Bicicletas</a></li>
+					<li><a class="blue-grey-text" href="{% url 'nova-bicicleta' %}" title="">Nova Bicicleta</a></li>
+					<li><a class="blue-grey-text" href="{% url 'lista-area' %}" title="">Áreas</a></li>
+					<li><a class="blue-grey-text" href="{% url 'nova-area' %}" title="">Nova Área</a></li>
+			    </ul>
+			</div>
+		</div>
+	</nav>
+{% endif %}

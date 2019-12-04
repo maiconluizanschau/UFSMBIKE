@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		{%block title%}{%endblock%}
+	</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static "css/materialize.min.css" %}">
+	<link rel="stylesheet" href="{% static "css/main.css" %}">
+	<style type="text/css" media="screen">
+		.area {
+			position: absolute;
+			width: 100%;
+			display: none;
+		}
+		.area:first-of-type {
+			display: initial;
+		}
+		.area-holder {
+			position: relative;
+		}
+		.ativo {
+			opacity: 1;
+		}
+	</style>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="{% static "js/jquery.min.js" %}"></script>
+	<script src="{% static "js/materialize.min.js" %}"></script>
+	<script src="{% static "js/init.js" %}"></script>
+</head>
+<body>
+	{% block nav %}{% endblock nav %}
+	<div class="container">
+			{%block content%}
+			{%endblock%}
+	</div>
+</body>
+</html>

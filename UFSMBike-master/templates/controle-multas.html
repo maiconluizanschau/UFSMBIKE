@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block nav %}{% include "nav-menu.html" %}{% endblock nav %}
+{% block content %}
+<h2>Adicionar multa</h2>
+<form method="POST" action="{% url 'adicionar-multa' %}">
+{% csrf_token %}
+	<label for="matricula">Matricula</label>
+	<input type="text" name="matricula">
+	<label for="multa">Valor</label>
+	<input type="number" name="multa">
+	<button class="btn" type="submit">Adicionar Multa</button>
+</form>
+{% endblock content %}

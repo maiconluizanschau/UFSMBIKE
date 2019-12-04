@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block nav %}{% include "nav-menu.html" %}{% endblock nav %}
+{% block content %}
+<h1>Locais de aluguel</h1>
+{% for area in areas %}
+<div class="card">
+	<div class="card-content">
+		<p class="card-title">{{area.nome}}</p>
+		<span class="chip">X: {{area.x}}</span>
+		<span class="chip">Y: {{area.y}}</span>
+	</div>
+	<div class="card-action">
+	<p><strong>Bicicletas nesta área:</strong></p>
+	{% for b in bicicletas %}
+		{% if b.areaAtual.id == area.id %}
+			<span class="white chip"><span class="chip">{{b.id}}</span>{{b.modelo}}</span>
+		{% endif %}
+	{% endfor %}
+	</div>
+	<div class="card-action">
+		<a class="btn" href="{% url 'editar-area' area.id %}">Editar</a>
+		<a class="btn" href="{% url 'excluir-area' area.id %}">Remover</a>
+	</div>
+</div>
+{% endfor %}
+{% endblock content %}

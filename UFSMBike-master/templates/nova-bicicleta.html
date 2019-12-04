@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block nav %}{% include "nav-menu.html" %}{% endblock nav %}
+{% block content %}
+<h2>Nova bicicleta</h2>
+	<form action="" method="POST" accept-charset="utf-8">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button class="btn" type="submit">Cadastrar</button>
+	</form>
+{% endblock content %}
